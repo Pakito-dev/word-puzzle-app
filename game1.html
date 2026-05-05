@@ -1,3 +1,19 @@
-<input id="guess" type="text">
-<button onclick="check()">OK</button>
-<p id="result"></p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Guess the Word</h1>
+
+<div id="board"></div>
+
+<input id="guessInput" maxlength="5" placeholder="Enter 5-letter word">
+<button onclick="submitGuess()">OK</button>
+
+<script src="game1.js"></script>
+</body>
+</html>
