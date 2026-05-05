@@ -33,3 +33,16 @@ body {
 .content {
     padding: 20px;
 }
+
+.welcome {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.logo a {
+    color: white;
+    text-decoration: none;
+}
+.topbar .logo a {
+    color: white;
+}

@@ -1,3 +1,22 @@
+const KEYBOARD_LAYOUT = [
+    ["Љ", "Њ", "Е", "Р", "Т", "З", "У", "И", "О", "П", "Ш", "Ђ"],
+    ["А", "С", "Д", "Ф", "Г", "Х", "Ј", "К", "Л", "Ч", "Ћ", "Ж"],
+    ["ENTER", "З", "Џ", "Ц", "В", "Б", "Н", "М", "BACK"]
+];
+const KEY_MAP = {
+    ";": "Ч",
+    "'": "Ћ",
+    "[": "Ш",
+    "]": "Ђ",
+    "\\": "Ж",
+
+    q: "Љ", w: "Њ",
+    y: "З",
+
+    c: "Ц", v: "В", b: "Б",
+    n: "Н", m: "М"
+};
+
 function normalizeLetter(key) {
     const map = {
         a: "А", b: "Б", c: "Ц", d: "Д", e: "Е", f: "Ф", g: "Г",
@@ -17,6 +36,30 @@ function normalizeLetter(key) {
     };
 
     return map[key] || null;
+}
+function createKeyboard() {
+    const keyboard = document.getElementById("keyboard");
+
+    KEYBOARD_LAYOUT.forEach(row => {
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("key-row");
+
+        row.forEach(key => {
+            const keyDiv = document.createElement("div");
+            keyDiv.classList.add("key");
+            keyDiv.innerText = key;
+
+            if (key === "ENTER" || key === "BACK") {
+                keyDiv.classList.add("special");
+            }
+
+            keyDiv.addEventListener("click", () => handleVirtualKey(key));
+
+            rowDiv.appendChild(keyDiv);
+        });
+
+        keyboard.appendChild(rowDiv);
+    });
 }
 
 const WORDS = ["ДУЋАН", "ВОДИЧ", "ШКОЛА", "КЊИГА", "СУНЦЕ"];
@@ -44,11 +87,30 @@ for (let i = 0; i < MAX_TRIES; i++) {
 let currentGuess = "";
 let gameOver = false;
 document.addEventListener("keydown", handleKey);
+function handleVirtualKey(key) {
+    if (gameOver) return;
+
+    if (key === "ENTER") {
+        submitGuess();
+        return;
+    }
+
+    if (key === "BACK") {
+        currentGuess = currentGuess.slice(0, -1);
+        updateRow();
+        return;
+    }
+
+    if (currentGuess.length < 5) {
+        currentGuess += key;
+        updateRow();
+    }
+}
 function handleKey(e) {
     if (currentTry >= MAX_TRIES) return;
     if (gameOver) return;
     const key = e.key.toLowerCase();
-    const letter = normalizeLetter(key);
+    let letter = KEY_MAP[key] || normalizeLetter(key);
 
     if (letter) {
         if (currentGuess.length < 5) {
@@ -133,11 +195,14 @@ function submitGuess() {
     if (guess === secret) {
         gameOver = true;
         setTimeout(() => alert("🎉 Success!"), 100);
+        return;
     }
 
     if (currentTry === MAX_TRIES) {
         gameOver = true;
         setTimeout(() => alert("❌ Failed! Word was: " + secret), 100);
+        return;
     }
     currentGuess = "";
 }
+createKeyboard();
