@@ -1,3 +1,4 @@
+renderLayout();
 const KEYBOARD_LAYOUT = [
     ["Љ", "Њ", "Е", "Р", "Т", "З", "У", "И", "О", "П", "Ш", "Ђ"],
     ["А", "С", "Д", "Ф", "Г", "Х", "Ј", "К", "Л", "Ч", "Ћ", "Ж"],
@@ -16,6 +17,8 @@ const KEY_MAP = {
     c: "Ц", v: "В", b: "Б",
     n: "Н", m: "М"
 };
+
+let keyState = {};
 
 function normalizeLetter(key) {
     const map = {
@@ -189,20 +192,51 @@ function submitGuess() {
         cells[i].classList.add(result[i]);
     }
 
+    for (let i = 0; i < 5; i++) {
+    const letter = guess[i];
+
+    if (result[i] === "green") {
+        keyState[letter] = "green";
+    }
+    else if (result[i] === "yellow") {
+        if (keyState[letter] !== "green") {
+            keyState[letter] = "yellow";
+        }
+    }
+    else {
+        if (!keyState[letter]) {
+            keyState[letter] = "gray";
+        }
+    }
+}
+
     currentTry++;
 
     // Check win
     if (guess === secret) {
         gameOver = true;
-        setTimeout(() => alert("🎉 Success!"), 100);
+        setTimeout(() => showToast("🎉 Свака част јуначе-јунакињо!"), 100);
         return;
     }
 
     if (currentTry === MAX_TRIES) {
         gameOver = true;
-        setTimeout(() => alert("❌ Failed! Word was: " + secret), 100);
+        setTimeout(() => showToast("❌ Нисте успели, реч је била: " + secret), 100);
         return;
     }
     currentGuess = "";
+    updateKeyboard();
 }
 createKeyboard();
+function updateKeyboard() {
+    const keys = document.querySelectorAll(".key");
+
+    keys.forEach(k => {
+        const letter = k.innerText;
+
+        if (keyState[letter]) {
+            k.classList.remove("green", "yellow", "gray");
+            k.classList.add(keyState[letter]);
+        }
+    });
+}

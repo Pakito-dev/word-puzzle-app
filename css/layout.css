@@ -46,3 +46,19 @@ body {
 .topbar .logo a {
     color: white;
 }
+#toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+
+    opacity: 0;
+    transition: opacity 0.3s;
+
+    pointer-events: none;
+}
