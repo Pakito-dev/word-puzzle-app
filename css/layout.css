@@ -1,17 +1,41 @@
+/* RESET */
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
 }
 
+/* TOPBAR */
 .topbar {
+    height: 60px;
+
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
     background: #222;
     color: white;
-    padding: 10px;
+    padding: 0 15px;
+
+    position: relative;
 }
 
+/* CENTER LOGO */
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.logo a {
+    color: white;
+    text-decoration: none;
+}
+
+/* SIDEBAR */
 .sidebar {
     position: fixed;
     left: -220px;
@@ -30,22 +54,16 @@ body {
     text-decoration: none;
 }
 
+/* CONTENT AREA = FULL HEIGHT BELOW TOPBAR */
 .content {
-    padding: 20px;
+    height: calc(100vh - 60px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.welcome {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.logo a {
-    color: white;
-    text-decoration: none;
-}
-.topbar .logo a {
-    color: white;
-}
+/* TOAST */
 #toast {
     position: fixed;
     bottom: 20px;
@@ -59,6 +77,4 @@ body {
 
     opacity: 0;
     transition: opacity 0.3s;
-
-    pointer-events: none;
 }

@@ -1,4 +1,3 @@
-renderLayout();
 const KEYBOARD_LAYOUT = [
     ["Љ", "Њ", "Е", "Р", "Т", "З", "У", "И", "О", "П", "Ш", "Ђ"],
     ["А", "С", "Д", "Ф", "Г", "Х", "Ј", "К", "Л", "Ч", "Ћ", "Ж"],
@@ -215,13 +214,13 @@ function submitGuess() {
     // Check win
     if (guess === secret) {
         gameOver = true;
-        setTimeout(() => showToast("🎉 Свака част јуначе-јунакињо!"), 100);
+        setTimeout(() => showToast("🎉 Свака част јуначе-јунакињо!"), 300);
         return;
     }
 
     if (currentTry === MAX_TRIES) {
         gameOver = true;
-        setTimeout(() => showToast("❌ Нисте успели, реч је била: " + secret), 100);
+        setTimeout(() => showToast("❌ Нисте успели, реч је била: " + secret), 300);
         return;
     }
     currentGuess = "";
