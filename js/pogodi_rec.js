@@ -1,21 +1,49 @@
 function normalizeLetter(key) {
+    key = key.toUpperCase();
+
     const map = {
-        a: "А", b: "Б", c: "Ц", d: "Д", e: "Е", f: "Ф", g: "Г",
-        h: "Х", i: "И", j: "Ј", k: "К", l: "Л", m: "М", n: "Н",
-        o: "О", p: "П", r: "Р", s: "С", t: "Т", u: "У", v: "В",
-        z: "З",
+        // Latin keyboard → Cyrillic
+        Q: "Љ",
+        W: "Њ",
+        E: "Е",
+        R: "Р",
+        T: "Т",
+        Z: "З",
+        U: "У",
+        I: "И",
+        O: "О",
+        P: "П",
+        Š: "Ш",
+        Đ: "Ђ",
+        Č: "Ч",
+        Ć: "Ћ",
 
-        č: "Ч", ć: "Ћ", š: "Ш", ž: "Ж", đ: "Ђ",
+        A: "А",
+        S: "С",
+        D: "Д",
+        F: "Ф",
+        G: "Г",
+        H: "Х",
+        J: "Ј",
+        K: "К",
+        L: "Л",
 
-        а: "А", б: "Б", ц: "Ц", д: "Д", е: "Е", ф: "Ф", г: "Г",
-        х: "Х", и: "И", ј: "Ј", к: "К", л: "Л", м: "М", н: "Н",
-        о: "О", п: "П", р: "Р", с: "С", т: "Т", у: "У", в: "В",
-        з: "З",
+        Y: "З",
+        C: "Ц",
+        V: "В",
+        B: "Б",
+        N: "Н",
+        M: "М",
+        ["["]: "Ш",
+        ["]"]: "Ђ",
+        [";"]: "Ч",
+        ["'"]: "Ћ",
+        ["\\"]: "Ж",
+        X: "Џ",
 
-        ч: "Ч", ћ: "Ћ", ш: "Ш", ж: "Ж", ђ: "Ђ"
     };
 
-    return map[key] || null;
+    return map[key] || key;
 }
 
 const WORDS = ["ДУЋАН", "ВОДИЧ", "ШКОЛА", "КЊИГА", "СУНЦЕ"];
@@ -54,33 +82,58 @@ function createBoard() {
 /* =========================
    INPUT
 ========================= */
-document.addEventListener("keydown", handleKey);
+const hiddenInput = document.getElementById("hiddenInput");
 
-function handleKey(e) {
+/* =========================
+   MOBILE LETTER INPUT
+========================= */
+hiddenInput.addEventListener("input", (e) => {
     if (gameOver) return;
-    if (currentTry >= MAX_TRIES) return;
 
-    const key = e.key.toLowerCase();
+    const value = e.target.value;
+    if (!value) return;
 
-    if (key === "enter") {
-        submitGuess();
-        return;
-    }
+    const raw = value.toLowerCase();
 
-    if (key === "backspace") {
-        currentGuess = currentGuess.slice(0, -1);
-        updateRow();
-        return;
-    }
-
-    const letter = normalizeLetter(key);
+    // take last “unit”
+    const last = raw.slice(-1);
+    const letter = normalizeLetter(last);
 
     if (letter && currentGuess.length < 5) {
         currentGuess += letter;
         updateRow();
     }
-}
 
+    hiddenInput.value = "";
+});
+
+/* =========================
+   KEY EVENTS (ENTER + BACKSPACE)
+========================= */
+hiddenInput.addEventListener("keydown", (e) => {
+    if (gameOver) return;
+
+    if (e.key === "Enter") {
+        submitGuess();
+        return;
+    }
+
+    if (e.key === "Backspace") {
+        currentGuess = currentGuess.slice(0, -1);
+        updateRow();
+        return;
+    }
+});
+
+/* =========================
+   MOBILE FOCUS HELPERS
+========================= */
+board.addEventListener("click", focusInput);
+document.addEventListener("touchstart", focusInput);
+
+function focusInput() {
+    hiddenInput.focus();
+}
 /* =========================
    RENDER
 ========================= */
@@ -165,3 +218,15 @@ function submitGuess() {
    INIT
 ========================= */
 createBoard();
+
+
+function focusInput() {
+    hiddenInput.focus();
+}
+
+// try on load
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        focusInput();
+    }, 300);
+});
