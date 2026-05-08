@@ -1,55 +1,4 @@
-renderLayout();
-
-document.getElementById("page-content").innerHTML = `
-    <div class="text-center">
-        <h2 class="text-xl font-bold mb-4">Погоди реч</h2>
-        <div id="board"></div>
-        <input id="hiddenInput" class="opacity-0 absolute">
-    </div>
-`;
-
-function normalizeLetter(key) {
-    key = key.toUpperCase();
-
-    const map = {
-        Q: "Љ",
-        W: "Њ",
-        E: "Е",
-        R: "Р",
-        T: "Т",
-        Z: "З",
-        U: "У",
-        I: "И",
-        O: "О",
-        P: "П",
-
-        A: "А",
-        S: "С",
-        D: "Д",
-        F: "Ф",
-        G: "Г",
-        H: "Х",
-        J: "Ј",
-        K: "К",
-        L: "Л",
-
-        Y: "З",
-        C: "Ц",
-        V: "В",
-        B: "Б",
-        N: "Н",
-        M: "М",
-
-        ";": "Ч",
-        "'": "Ћ",
-        "[": "Ш",
-        "]": "Ђ",
-        "\\": "Ж",
-        X: "Џ"
-    };
-
-    return map[key] || key;
-}
+renderLayout(initGame);
 
 /* =========================
    STATE
@@ -57,17 +6,78 @@ function normalizeLetter(key) {
 
 let ANSWERS = [];
 let DICTIONARY = [];
-let gameReady = false;
 let secret = "";
+
+let gameReady = false;
+let gameOver = false;
 
 const MAX_TRIES = 7;
 
 let currentTry = 0;
 let currentGuess = "";
-let gameOver = false;
 
-const board = document.getElementById("board");
-const hiddenInput = document.getElementById("hiddenInput");
+/* =========================
+   NORMALIZE LETTERS
+========================= */
+
+function normalizeLetter(key) {
+    key = key.toUpperCase();
+
+    const map = {
+        Q: "Љ", W: "Њ", E: "Е", R: "Р", T: "Т",
+        Z: "З", U: "У", I: "И", O: "О", P: "П",
+
+        A: "А", S: "С", D: "Д", F: "Ф", G: "Г",
+        H: "Х", J: "Ј", K: "К", L: "Л",
+
+        Y: "З", C: "Ц", V: "В", B: "Б", N: "Н", M: "М",
+
+        ";": "Ч", "'": "Ћ", "[": "Ш", "]": "Ђ",
+        "\\": "Ж", X: "Џ"
+    };
+
+    return map[key] || null;
+}
+
+/* =========================
+   INIT GAME
+========================= */
+
+async function initGame() {
+    const page = document.getElementById("page-content");
+
+    page.innerHTML = `
+        <div class="text-center flex flex-col items-center">
+
+            <h2 class="text-xl font-bold mb-4">Погоди реч</h2>
+
+            <div id="board" class="flex flex-col gap-2 w-full max-w-xs"></div>
+
+            <input
+                id="hiddenInput"
+                type="text"
+                inputmode="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="characters"
+                class="opacity-0 absolute pointer-events-none"
+            />
+
+        </div>
+    `;
+
+    await loadData();
+
+    const board = document.getElementById("board");
+    const hiddenInput = document.getElementById("hiddenInput");
+
+    createBoard(board);
+    attachInputHandlers(hiddenInput, board);
+
+    gameReady = true;
+
+    focusInput(hiddenInput);
+}
 
 /* =========================
    LOAD DATA
@@ -83,24 +93,13 @@ async function loadData() {
     DICTIONARY = await d.json();
 
     secret = ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
-    gameReady = true;
-}
-
-loadData();
-
-/* =========================
-   VALIDATION
-========================= */
-
-function isValidWord(word) {
-    return DICTIONARY.includes(word);
 }
 
 /* =========================
    BOARD
 ========================= */
 
-function createBoard() {
+function createBoard(board) {
     for (let i = 0; i < MAX_TRIES; i++) {
         const row = document.createElement("div");
         row.className = "grid grid-cols-5 gap-2 w-full max-w-xs mx-auto";
@@ -117,58 +116,55 @@ function createBoard() {
 }
 
 /* =========================
-   INPUT (MOBILE)
+   INPUT HANDLERS
 ========================= */
 
-hiddenInput.addEventListener("input", (e) => {
-    if (!gameReady || gameOver) return;
+function attachInputHandlers(input, board) {
 
-    const value = e.target.value;
-    if (!value) return;
+    // LETTER INPUT
+    input.addEventListener("input", (e) => {
+        if (!gameReady || gameOver) return;
 
-    const letter = normalizeLetter(value.slice(-1).toLowerCase());
+        const value = e.target.value;
+        if (!value) return;
 
-    if (letter && currentGuess.length < 5) {
-        currentGuess += letter;
-        updateRow();
-    }
+        const letter = normalizeLetter(value.slice(-1));
 
-    hiddenInput.value = "";
-});
+        if (letter && currentGuess.length < 5) {
+            currentGuess += letter;
+            updateRow(board);
+        }
 
-/* =========================
-   KEYBOARD EVENTS
-========================= */
+        input.value = "";
+    });
 
-hiddenInput.addEventListener("keydown", (e) => {
-    if (!gameReady || gameOver) return;
+    // ENTER / BACKSPACE
+    input.addEventListener("keydown", (e) => {
+        if (!gameReady || gameOver) return;
 
-    if (e.key === "Enter") {
-        submitGuess();
-    }
+        if (e.key === "Enter") {
+            submitGuess(board);
+            return;
+        }
 
-    if (e.key === "Backspace") {
-        currentGuess = currentGuess.slice(0, -1);
-        updateRow();
-    }
-});
+        if (e.key === "Backspace") {
+            currentGuess = currentGuess.slice(0, -1);
+            updateRow(board);
+        }
+    });
 
-/* =========================
-   TOUCH FOCUS
-========================= */
+    // IMPORTANT: ONLY THIS (NO touchstart)
+    const activate = () => focusInput(input);
 
-board.addEventListener("click", focusInput);
-document.addEventListener("touchstart", focusInput);
-
-function focusInput() {
-    hiddenInput.focus();
+    board.addEventListener("pointerdown", activate);
+    document.addEventListener("pointerdown", activate);
 }
 
 /* =========================
-   RENDER ROW
+   UPDATE ROW
 ========================= */
 
-function updateRow() {
+function updateRow(board) {
     const row = board.children[currentTry];
     if (!row) return;
 
@@ -180,16 +176,23 @@ function updateRow() {
 }
 
 /* =========================
+   VALIDATION
+========================= */
+
+function isValidWord(word) {
+    return DICTIONARY.includes(word);
+}
+
+/* =========================
    SUBMIT
 ========================= */
 
-function submitGuess() {
+function submitGuess(board) {
     if (!gameReady || gameOver) return;
     if (currentGuess.length !== 5) return;
 
     const guess = currentGuess;
 
-    // VALIDATION FIRST
     if (!isValidWord(guess)) {
         showToast("Реч није у речнику!");
         return;
@@ -213,18 +216,19 @@ function submitGuess() {
     for (let i = 0; i < 5; i++) {
         if (result[i] === "green") continue;
 
-        const index = secretArr.indexOf(guess[i]);
+        const idx = secretArr.indexOf(guess[i]);
 
-        if (index !== -1) {
+        if (idx !== -1) {
             result[i] = "yellow";
-            secretArr[index] = null;
+            secretArr[idx] = null;
         }
     }
 
     // APPLY UI
     for (let i = 0; i < 5; i++) {
         cells[i].innerText = guess[i];
-        cells[i].className += " text-white font-bold";
+
+        cells[i].classList.add("text-white", "font-bold");
 
         if (result[i] === "green") {
             cells[i].classList.add("bg-green-600");
@@ -241,23 +245,46 @@ function submitGuess() {
     // WIN
     if (guess === secret) {
         gameOver = true;
-        setTimeout(() => showToast("🎉 Победа!"), 4000);
+        showToast("🎉 Победа!");
         return;
     }
 
     // LOSE
     if (currentTry === MAX_TRIES) {
         gameOver = true;
-        setTimeout(() => showToast("❌ Реч је била: " + secret), 4000);
+        showToast("❌ Реч је била: " + secret);
     }
+
+    setTimeout(() => {
+        const board = document.getElementById("board");
+        const rows = board.children;
+
+        const targetRow = rows[currentTry];
+
+        if (!targetRow) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const absoluteY = window.scrollY + rect.top;
+
+        // center row slightly ABOVE middle of screen
+        const offset = window.innerHeight * 0.35;
+
+        window.scrollTo({
+            top: absoluteY - offset,
+            behavior: "smooth"
+        });
+
+    }, 120);
 }
 
 /* =========================
-   INIT
+   FOCUS (FIXED MOBILE)
 ========================= */
 
-createBoard();
+function focusInput(input) {
+    if (!input) return;
 
-window.addEventListener("load", () => {
-    setTimeout(focusInput, 300);
-});
+    setTimeout(() => {
+        input.focus(); // ❌ no preventScroll
+    }, 50);
+}
