@@ -7,16 +7,30 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: #18181b;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+    </style>
 </head>
 
-<body class="bg-zinc-900 text-white min-h-screen overflow-x-hidden">
-    
-<!-- ROOT (layout gets injected here) -->
-<div id="app"></div>
+<body class="bg-zinc-900 text-white">
 
-<!-- SCRIPTS -->
-<script src="../js/layout.js"></script>
-<script src="../js/pogodi_rec.js"></script>
+    <!-- ROOT -->
+    <div id="app"></div>
+
+    <!-- JS -->
+    <script src="../js/layout.js"></script>
+    <script src="../js/pogodi_rec.js"></script>
 
 </body>
 </html>
