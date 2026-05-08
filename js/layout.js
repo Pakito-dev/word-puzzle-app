@@ -14,7 +14,7 @@ function renderLayout(onReady) {
                 </button>
 
                 <a href="/index.html" class="text-xl font-bold">
-                    Енигматика
+                    Лагани квиз
                 </a>
 
                 <a href="/onama.html" class="text-sm opacity-80 hover:opacity-100">
