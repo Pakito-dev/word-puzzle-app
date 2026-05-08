@@ -1,6 +1,11 @@
-window.toggleMenu = function() {
+function toggleMenu() {
     const sidebar = document.getElementById("sidebar");
-    sidebar.style.left = sidebar.style.left === "0px" ? "-200px" : "0px";
+
+    if (sidebar.style.left === "0px") {
+        sidebar.style.left = "-260px";
+    } else {
+        sidebar.style.left = "0px";
+    }
 }
 
 window.showToast = function(message) {

@@ -62,6 +62,10 @@ body {
     justify-content: center;
     align-items: center;
 }
+.welcome {
+    text-align: center;
+    margin-top: 50px;
+}
 
 /* TOAST */
 #toast {
