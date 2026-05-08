@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Енигматика</title>
 
     <!-- Tailwind -->
@@ -12,92 +11,43 @@
 
 <body class="bg-zinc-900 text-white min-h-screen">
 
-<!-- TOPBAR -->
-<header class="h-14 bg-black text-white flex items-center justify-between px-4 shadow-lg">
+<!-- ROOT FOR LAYOUT -->
+<div id="app"></div>
 
-    <button onclick="toggleMenu()" class="text-2xl">
-        ☰
-    </button>
-
-    <h1 class="text-xl font-bold">
-        <a href="index.html">Лагани дневни квиз</a>
-    </h1>
-
-    <a href="onama.html" class="text-sm opacity-80 hover:opacity-100">
-        О нама
-    </a>
-
-</header>
-
-<!-- SIDEBAR -->
-<aside
-    id="sidebar"
-    class="
-        fixed
-        top-0
-        left-[-260px]
-        w-64
-        h-full
-        bg-zinc-800
-        text-white
-        p-4
-        transition-all
-        duration-300
-        z-50
-    "
->
-
-    <h2 class="text-lg font-bold mb-4">
-        Игре
-    </h2>
-
-    <nav class="flex flex-col gap-2">
-
-        <a href="games/pogodi_rec.html" class="p-2 rounded hover:bg-zinc-700">
-            Погоди реч
-        </a>
-
-        <a href="games/pogodi_grad.html" class="p-2 rounded hover:bg-zinc-700">
-            Погоди град
-        </a>
-
-    </nav>
-
-</aside>
-
-<!-- MAIN CONTENT -->
-<main class="max-w-2xl mx-auto text-center mt-10 px-4">
-
-    <h1 class="text-4xl font-bold mb-4">
-        Добродошли у лагани квиз
-    </h1>
-
-    <p class="text-zinc-300 mb-8">
-        Енигматске игре, погађање речи и градова, и још много тога!
-    </p>
-
-    <div class="grid gap-4">
-
-        <a
-            href="games/pogodi_rec.html"
-            class="bg-zinc-800 hover:bg-zinc-700 p-4 rounded-2xl transition shadow-lg"
-        >
-            Реч од 5 слова
-        </a>
-
-        <a
-            href="games/pogodi_grad.html"
-            class="bg-zinc-800 hover:bg-zinc-700 p-4 rounded-2xl transition shadow-lg"
-        >
-            Погоди град
-        </a>
-
-    </div>
-
-</main>
-
-<!-- JS -->
+<!-- SCRIPTS -->
 <script src="js/layout.js"></script>
+
+<script>
+    renderLayout();
+
+    document.getElementById("page-content").innerHTML = `
+        <main class="max-w-2xl mx-auto text-center mt-10 px-4">
+
+            <h1 class="text-4xl font-bold mb-4">
+                Добродошли у лагани квиз
+            </h1>
+
+            <p class="text-zinc-300 mb-8">
+                Енигматске игре, погађање речи и градова, и још много тога!
+            </p>
+
+            <div class="grid gap-4">
+
+                <a href="games/pogodi_rec.html"
+                   class="bg-zinc-800 hover:bg-zinc-700 p-4 rounded-2xl transition shadow-lg">
+                    Реч од 5 слова
+                </a>
+
+                <a href="games/pogodi_grad.html"
+                   class="bg-zinc-800 hover:bg-zinc-700 p-4 rounded-2xl transition shadow-lg">
+                    Погоди град
+                </a>
+
+            </div>
+
+        </main>
+    `;
+</script>
 
 </body>
 </html>

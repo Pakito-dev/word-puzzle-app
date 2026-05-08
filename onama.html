@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Енигматика</title>
+    <title>О нама</title>
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,76 +11,41 @@
 
 <body class="bg-zinc-900 text-white min-h-screen">
 
-<!-- TOPBAR -->
-<header class="h-14 bg-black text-white flex items-center justify-between px-4 shadow-lg">
+<!-- ROOT -->
+<div id="app"></div>
 
-    <button onclick="toggleMenu()" class="text-2xl">
-        ☰
-    </button>
-
-    <h1 class="text-xl font-bold">
-        <a href="index.html">Лагани дневни квиз</a>
-    </h1>
-
-    <a href="onama.html" class="text-sm opacity-80 hover:opacity-100">
-        О нама
-    </a>
-
-</header>
-
-<!-- SIDEBAR -->
-<aside
-    id="sidebar"
-    class="
-        fixed
-        top-0
-        left-[-260px]
-        w-64
-        h-full
-        bg-zinc-800
-        text-white
-        p-4
-        transition-all
-        duration-300
-        z-50
-    "
->
-
-    <h2 class="text-lg font-bold mb-4">
-        Игре
-    </h2>
-
-    <nav class="flex flex-col gap-2">
-
-        <a href="games/pogodi_rec.html" class="p-2 rounded hover:bg-zinc-700">
-            Погоди реч
-        </a>
-
-        <a href="games/pogodi_grad.html" class="p-2 rounded hover:bg-zinc-700">
-            Погоди град
-        </a>
-
-    </nav>
-
-</aside>
-
-<!-- MAIN CONTENT -->
-<main class="max-w-2xl mx-auto text-center mt-10 px-4">
-
-    <h1 class="text-4xl font-bold mb-4">
-        Моје име је Павле
-    </h1>
-
-    <p class="text-zinc-300 mb-8">
-        Уживам у једноставним квизовима и енигматским играма. Овај сајт је моја колекција омиљених игара и загонетки. Надам се да ћете уживати у њима као што ја уживам у прављењу овог сајта!
-        Ако имате било какве предлоге или желите да ме контактирате, слободно ми пишите на <a href="mailto: pajapaja00@gmail.com" class="text-blue-400 hover:underline">pajapaja00@gmail.com</a>
-    </p>
-
-   
-</main>
-
-<!-- JS -->
+<!-- SCRIPTS -->
 <script src="js/layout.js"></script>
+
+<script>
+    renderLayout();
+
+    document.getElementById("page-content").innerHTML = `
+        <main class="max-w-2xl mx-auto text-center mt-10 px-4">
+
+            <h1 class="text-4xl font-bold mb-4">
+                Моје име је Павле
+            </h1>
+
+            <p class="text-zinc-300 mb-8 leading-relaxed">
+                Уживам у једноставним квизовима и енигматским играма.
+                Овај сајт је моја колекција омиљених игара и загонетки.
+
+                Надам се да ћете уживати у њима као што ја уживам у прављењу овог сајта!
+                <br><br>
+
+                Ако имате било какве предлоге или желите да ме контактирате,
+                слободно ми пишите на
+
+                <a href="mailto:pajapaja00@gmail.com"
+                   class="text-blue-400 hover:underline">
+                    pajapaja00@gmail.com
+                </a>
+            </p>
+
+        </main>
+    `;
+</script>
 
 </body>
 </html>

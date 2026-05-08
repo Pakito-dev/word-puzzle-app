@@ -1,3 +1,13 @@
+renderLayout();
+
+document.getElementById("page-content").innerHTML = `
+    <div class="text-center">
+        <h2 class="text-xl font-bold mb-4">Погоди реч</h2>
+        <div id="board"></div>
+        <input id="hiddenInput" class="opacity-0 absolute">
+    </div>
+`;
+
 function normalizeLetter(key) {
     key = key.toUpperCase();
 
@@ -231,14 +241,14 @@ function submitGuess() {
     // WIN
     if (guess === secret) {
         gameOver = true;
-        setTimeout(() => showToast("🎉 Победа!"), 2000);
+        setTimeout(() => showToast("🎉 Победа!"), 4000);
         return;
     }
 
     // LOSE
     if (currentTry === MAX_TRIES) {
         gameOver = true;
-        setTimeout(() => showToast("❌ Реч је била: " + secret), 2000);
+        setTimeout(() => showToast("❌ Реч је била: " + secret), 4000);
     }
 }
 
