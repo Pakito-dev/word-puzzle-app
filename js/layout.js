@@ -8,15 +8,20 @@ function toggleMenu() {
     }
 }
 
-window.showToast = function(message) {
+function showToast(message, duration = 2000) {
     const toast = document.getElementById("toast");
-
-    if (!toast) return; // safety
+    if (!toast) return;
 
     toast.innerText = message;
-    toast.style.opacity = 1;
 
-    setTimeout(() => {
-        toast.style.opacity = 0;
-    }, 2000);
-};
+    // show
+    toast.classList.remove("opacity-0", "translate-y-4");
+    toast.classList.add("opacity-100", "translate-y-0");
+
+    clearTimeout(window.__toastTimer);
+
+    window.__toastTimer = setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-4");
+        toast.classList.remove("opacity-100", "translate-y-0");
+    }, duration);
+}

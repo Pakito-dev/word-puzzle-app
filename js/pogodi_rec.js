@@ -2,7 +2,6 @@ function normalizeLetter(key) {
     key = key.toUpperCase();
 
     const map = {
-        // Latin keyboard → Cyrillic
         Q: "Љ",
         W: "Њ",
         E: "Е",
@@ -13,10 +12,6 @@ function normalizeLetter(key) {
         I: "И",
         O: "О",
         P: "П",
-        Š: "Ш",
-        Đ: "Ђ",
-        Č: "Ч",
-        Ć: "Ћ",
 
         A: "А",
         S: "С",
@@ -34,44 +29,76 @@ function normalizeLetter(key) {
         B: "Б",
         N: "Н",
         M: "М",
-        ["["]: "Ш",
-        ["]"]: "Ђ",
-        [";"]: "Ч",
-        ["'"]: "Ћ",
-        ["\\"]: "Ж",
-        X: "Џ",
 
+        ";": "Ч",
+        "'": "Ћ",
+        "[": "Ш",
+        "]": "Ђ",
+        "\\": "Ж",
+        X: "Џ"
     };
 
     return map[key] || key;
 }
 
-const WORDS = ["ДУЋАН", "ВОДИЧ", "ШКОЛА", "КЊИГА", "СУНЦЕ"];
+/* =========================
+   STATE
+========================= */
+
+let ANSWERS = [];
+let DICTIONARY = [];
+let gameReady = false;
+let secret = "";
+
 const MAX_TRIES = 7;
 
-let secret = WORDS[Math.floor(Math.random() * WORDS.length)];
 let currentTry = 0;
-
-const board = document.getElementById("board");
-
 let currentGuess = "";
 let gameOver = false;
+
+const board = document.getElementById("board");
+const hiddenInput = document.getElementById("hiddenInput");
+
+/* =========================
+   LOAD DATA
+========================= */
+
+async function loadData() {
+    const [a, d] = await Promise.all([
+        fetch("/data/resenja.json"),
+        fetch("/data/reci_5_slova.json")
+    ]);
+
+    ANSWERS = await a.json();
+    DICTIONARY = await d.json();
+
+    secret = ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
+    gameReady = true;
+}
+
+loadData();
+
+/* =========================
+   VALIDATION
+========================= */
+
+function isValidWord(word) {
+    return DICTIONARY.includes(word);
+}
 
 /* =========================
    BOARD
 ========================= */
+
 function createBoard() {
     for (let i = 0; i < MAX_TRIES; i++) {
         const row = document.createElement("div");
-
         row.className = "grid grid-cols-5 gap-2 w-full max-w-xs mx-auto";
 
         for (let j = 0; j < 5; j++) {
             const cell = document.createElement("div");
-
             cell.className =
                 "aspect-square border border-zinc-600 flex items-center justify-center text-xl font-bold uppercase";
-
             row.appendChild(cell);
         }
 
@@ -80,24 +107,16 @@ function createBoard() {
 }
 
 /* =========================
-   INPUT
+   INPUT (MOBILE)
 ========================= */
-const hiddenInput = document.getElementById("hiddenInput");
 
-/* =========================
-   MOBILE LETTER INPUT
-========================= */
 hiddenInput.addEventListener("input", (e) => {
-    if (gameOver) return;
+    if (!gameReady || gameOver) return;
 
     const value = e.target.value;
     if (!value) return;
 
-    const raw = value.toLowerCase();
-
-    // take last “unit”
-    const last = raw.slice(-1);
-    const letter = normalizeLetter(last);
+    const letter = normalizeLetter(value.slice(-1).toLowerCase());
 
     if (letter && currentGuess.length < 5) {
         currentGuess += letter;
@@ -108,35 +127,37 @@ hiddenInput.addEventListener("input", (e) => {
 });
 
 /* =========================
-   KEY EVENTS (ENTER + BACKSPACE)
+   KEYBOARD EVENTS
 ========================= */
+
 hiddenInput.addEventListener("keydown", (e) => {
-    if (gameOver) return;
+    if (!gameReady || gameOver) return;
 
     if (e.key === "Enter") {
         submitGuess();
-        return;
     }
 
     if (e.key === "Backspace") {
         currentGuess = currentGuess.slice(0, -1);
         updateRow();
-        return;
     }
 });
 
 /* =========================
-   MOBILE FOCUS HELPERS
+   TOUCH FOCUS
 ========================= */
+
 board.addEventListener("click", focusInput);
 document.addEventListener("touchstart", focusInput);
 
 function focusInput() {
     hiddenInput.focus();
 }
+
 /* =========================
-   RENDER
+   RENDER ROW
 ========================= */
+
 function updateRow() {
     const row = board.children[currentTry];
     if (!row) return;
@@ -149,12 +170,20 @@ function updateRow() {
 }
 
 /* =========================
-   GAME LOGIC
+   SUBMIT
 ========================= */
+
 function submitGuess() {
+    if (!gameReady || gameOver) return;
     if (currentGuess.length !== 5) return;
 
     const guess = currentGuess;
+
+    // VALIDATION FIRST
+    if (!isValidWord(guess)) {
+        showToast("Реч није у речнику!");
+        return;
+    }
 
     const row = board.children[currentTry];
     const cells = row.children;
@@ -174,7 +203,7 @@ function submitGuess() {
     for (let i = 0; i < 5; i++) {
         if (result[i] === "green") continue;
 
-        let index = secretArr.indexOf(guess[i]);
+        const index = secretArr.indexOf(guess[i]);
 
         if (index !== -1) {
             result[i] = "yellow";
@@ -185,8 +214,7 @@ function submitGuess() {
     // APPLY UI
     for (let i = 0; i < 5; i++) {
         cells[i].innerText = guess[i];
-
-        cells[i].classList.add("text-white", "font-bold");
+        cells[i].className += " text-white font-bold";
 
         if (result[i] === "green") {
             cells[i].classList.add("bg-green-600");
@@ -203,30 +231,23 @@ function submitGuess() {
     // WIN
     if (guess === secret) {
         gameOver = true;
-        setTimeout(() => showToast("🎉 Победа!"), 300);
+        setTimeout(() => showToast("🎉 Победа!"), 2000);
         return;
     }
 
     // LOSE
     if (currentTry === MAX_TRIES) {
         gameOver = true;
-        setTimeout(() => showToast("❌ Реч је била: " + secret), 300);
+        setTimeout(() => showToast("❌ Реч је била: " + secret), 2000);
     }
 }
 
 /* =========================
    INIT
 ========================= */
+
 createBoard();
 
-
-function focusInput() {
-    hiddenInput.focus();
-}
-
-// try on load
 window.addEventListener("load", () => {
-    setTimeout(() => {
-        focusInput();
-    }, 300);
+    setTimeout(focusInput, 300);
 });
