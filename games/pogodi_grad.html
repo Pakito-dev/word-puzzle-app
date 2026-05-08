@@ -7,49 +7,30 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: #18181b;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+    </style>
 </head>
 
-<body class="bg-zinc-900 text-white min-h-screen">
+<body class="bg-zinc-900 text-white">
 
-<!-- ROOT -->
-<div id="app"></div>
+    <!-- ROOT -->
+    <div id="app"></div>
 
-<!-- SCRIPTS -->
-<script src="../js/layout.js"></script>
-<script src="../js/pogodi_grad.js"></script>
-
-<script>
-    renderLayout();
-
-    document.getElementById("page-content").innerHTML = `
-        <main class="flex flex-col items-center p-4 text-center">
-
-            <h2 class="text-3xl font-bold mb-6">
-                Погоди град
-            </h2>
-
-            <div class="w-full max-w-md rounded-2xl overflow-hidden shadow-lg mb-4">
-                <img
-                    src="../images/novi-sad.jpg"
-                    class="w-full object-cover rounded-xl"
-                >
-            </div>
-
-            <input
-                type="text"
-                placeholder="Унеси град..."
-                class="w-full max-w-md p-3 rounded-xl text-black text-center mb-4"
-            >
-
-            <button
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-bold transition"
-            >
-                Потврди
-            </button>
-
-        </main>
-    `;
-</script>
+    <!-- JS -->
+    <script src="../js/layout.js"></script>
+    <script src="../js/pogodi_grad.js"></script>
 
 </body>
 </html>

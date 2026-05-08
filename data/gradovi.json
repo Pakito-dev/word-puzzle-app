@@ -1,0 +1,176 @@
+[
+    {
+        "name": "БЕОГРАД",
+        "lat": 44.7866,
+        "lng": 20.4489,
+        "image": "/images/gradovi/beograd.jpg"
+    },
+    {
+        "name": "НОВИ САД",
+        "lat": 45.2671,
+        "lng": 19.8335,
+        "image": "/images/gradovi/novi_sad.jpg"
+    },
+    {
+        "name": "НИШ",
+        "lat": 43.3209,
+        "lng": 21.8958,
+        "image": "/images/gradovi/nis.jpg"
+    },
+    {
+        "name": "КРАГУЈЕВАЦ",
+        "lat": 44.0128,
+        "lng": 20.9114,
+        "image": "/images/gradovi/kragujevac.jpg"
+    },
+    {
+        "name": "СУБОТИЦА",
+        "lat": 46.1000,
+        "lng": 19.6667,
+        "image": "/images/gradovi/subotica.jpg"
+    },
+    {
+        "name": "ЗРЕЊАНИН",
+        "lat": 45.3836,
+        "lng": 20.3819,
+        "image": "/images/gradovi/zrenjanin.jpg"
+    },
+    {
+        "name": "ПАНЧЕВО",
+        "lat": 44.8700,
+        "lng": 20.6403,
+        "image": "/images/gradovi/pancevo.jpg"
+    },
+    {
+        "name": "ЧАЧАК",
+        "lat": 43.8914,
+        "lng": 20.3497,
+        "image": "/images/gradovi/cacak.jpg"
+    },
+    {
+        "name": "КРАЉЕВО",
+        "lat": 43.7258,
+        "lng": 20.6894,
+        "image": "/images/gradovi/kraljevo.jpg"
+    },
+    {
+        "name": "СМЕДЕРЕВО",
+        "lat": 44.6644,
+        "lng": 20.9276,
+        "image": "/images/gradovi/smederevo.jpg"
+    },
+    {
+        "name": "ЛЕСКОВАЦ",
+        "lat": 42.9981,
+        "lng": 21.9461,
+        "image": "/images/gradovi/leskovac.jpg"
+    },
+    {
+        "name": "УЖИЦЕ",
+        "lat": 43.8550,
+        "lng": 19.8425,
+        "image": "/images/gradovi/uzice.jpg"
+    },
+    {
+        "name": "ВРАЊЕ",
+        "lat": 42.5514,
+        "lng": 21.9003,
+        "image": "/images/gradovi/vranje.jpg"
+    },
+    {
+        "name": "ВАЉЕВО",
+        "lat": 44.2751,
+        "lng": 19.8982,
+        "image": "/images/gradovi/valjevo.jpg"
+    },
+    {
+        "name": "ШАБАЦ",
+        "lat": 44.7467,
+        "lng": 19.6900,
+        "image": "/images/gradovi/sabac.jpg"
+    },
+    {
+        "name": "СОМБОР",
+        "lat": 45.7742,
+        "lng": 19.1122,
+        "image": "/images/gradovi/sombor.jpg"
+    },
+    {
+        "name": "ПОЖАРЕВАЦ",
+        "lat": 44.6206,
+        "lng": 21.1878,
+        "image": "/images/gradovi/pozarevac.jpg"
+    },
+    {
+        "name": "ПИРОТ",
+        "lat": 43.1531,
+        "lng": 22.5861,
+        "image": "/images/gradovi/pirot.jpg"
+    },
+    {
+        "name": "КИКИНДА",
+        "lat": 45.8275,
+        "lng": 20.4661,
+        "image": "/images/gradovi/kikinda.jpg"
+    },
+    {
+        "name": "СРЕМСКА МИТРОВИЦА",
+        "lat": 44.9639,
+        "lng": 19.6100,
+        "image": "/images/gradovi/sremska_mitrovica.jpg"
+    },
+    {
+        "name": "ЈАГОДИНА",
+        "lat": 43.9780,
+        "lng": 21.2612,
+        "image": "/images/gradovi/jagodina.jpg"
+    },
+    {
+        "name": "БОР",
+        "lat": 44.0749,
+        "lng": 22.0959,
+        "image": "/images/gradovi/bor.jpg"
+    },
+    {
+        "name": "ПРОКУПЉЕ",
+        "lat": 43.2342,
+        "lng": 21.5881,
+        "image": "/images/gradovi/prokuplje.jpg"
+    },
+    {
+        "name": "ЗАЈЕЧАР",
+        "lat": 43.9014,
+        "lng": 22.2736,
+        "image": "/images/gradovi/zajecar.jpg"
+    },
+    {
+        "name": "ЛОЗНИЦА",
+        "lat": 44.5333,
+        "lng": 19.2258,
+        "image": "/images/gradovi/loznica.jpg"
+    },
+    {
+        "name": "НОВИ ПАЗАР",
+        "lat": 43.1367,
+        "lng": 20.5122,
+        "image": "/images/gradovi/novi_pazar.jpg"
+    },
+    {
+        "name": "СМЕДЕРЕВСКА ПАЛАНКА",
+        "lat": 44.3655,
+        "lng": 20.9589,
+        "image": "/images/gradovi/smederevska_palanka.jpg"
+    },
+    {
+        "name": "АРАЊЕЛОВАЦ",
+        "lat": 44.3069,
+        "lng": 20.5603,
+        "image": "/images/gradovi/arandjelovac.jpg"
+    },
+    {
+        "name": "ВРШАЦ",
+        "lat": 45.1197,
+        "lng": 21.3036,
+        "image": "/images/gradovi/vrsac.jpg"
+    }
+]
